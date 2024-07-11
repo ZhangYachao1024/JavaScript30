@@ -80,7 +80,6 @@
       const paddingInput = document.querySelector('input[name="spacing"]');
       const blurInput = document.querySelector('input[name="blur"]');
       const baseInput = document.querySelector('input[name="base"]');
-      console.log('[ baseInput ]-76', baseInput.value, baseInput.dataset.sizing);
   
       document.querySelector('.img-css-test').innerText = ` img { padding: ${paddingInput.value + (paddingInput.dataset.sizing || '')}; filter: blur(${blurInput.value + (blurInput.dataset.sizing || '')}); background-color: ${baseInput.value + (baseInput.dataset.sizing || '')}; `;
     }
