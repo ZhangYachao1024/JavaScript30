@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Scoped CSS Variables and JS</title>
 </head>
+
 <body>
   <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
-    <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+    <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px" oninput="onInput('spacing')">
 
     <label for="blur">Blur:</label>
-    <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+    <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px" oninput="onInput('blur')">
 
     <label for="base">Base Color</label>
-    <input type="color" name="base" value="#ffc600">
+    <input type="color" name="base" value="#ffc600" oninput="onInput('base')">
   </div>
+  <div class="img-css-test"></div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img src="./img.jpg">
 
   <style>
-
     /*
       misc styles, nothing to do with CSS variables
     */
+    :root {
+      --spacing: 10px;
+      --blur: 10px;
+      --base: #ffc600;
+    }
 
     body {
       text-align: center;
@@ -43,12 +50,42 @@
     }
 
     input {
-      width:100px;
+      width: 100px;
+    }
+
+    .img-css-test {
+      padding: 20px 0;
+      font-size: 14px;
+    }
+
+    img {
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+      background-color: var(--base);
     }
   </style>
 
   <script>
+    updateText();
+
+    function onInput(name) {
+      const activeInput = document.querySelector(`input[name=${name}]`);
+      const suffix = activeInput.dataset.sizing || '';
+      document.documentElement.style.setProperty(`--${name}`, activeInput.value + suffix);
+
+      updateText();
+    }
+    
+    function updateText() {
+      const paddingInput = document.querySelector('input[name="spacing"]');
+      const blurInput = document.querySelector('input[name="blur"]');
+      const baseInput = document.querySelector('input[name="base"]');
+      console.log('[ baseInput ]-76', baseInput.value, baseInput.dataset.sizing);
+  
+      document.querySelector('.img-css-test').innerText = ` img { padding: ${paddingInput.value + (paddingInput.dataset.sizing || '')}; filter: blur(${blurInput.value + (blurInput.dataset.sizing || '')}); background-color: ${baseInput.value + (baseInput.dataset.sizing || '')}; `;
+    }
   </script>
 
 </body>
+
 </html>

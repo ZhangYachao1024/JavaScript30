@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
 
   <div class="keys">
     <div data-key="65" class="key">
@@ -58,8 +59,27 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
   <script>
+    // 1. 事件回调单独写一个函数
+    // 2. querySelector和querySelectorAll适用更多场景
+    // 3. transitionend事件过渡结束触发
+    window.addEventListener('keydown', perform);
+    document.querySelector('.keys').addEventListener('transitionend', reset);
 
+    function perform(event) {
+      const activeKey = document.querySelector(`div[data-key="${event.keyCode}"]`);
+      if (!activeKey) return;
+
+      activeKey.classList.add('playing');
+      const activeAudio = document.querySelector(`audio[data-key="${event.keyCode}"]`);
+      activeAudio.currentTime = 0;
+      activeAudio.play();
+    }
+
+    function reset(event) {
+      event.target.classList.remove('playing');
+    }
   </script>
 
 </body>
+
 </html>
