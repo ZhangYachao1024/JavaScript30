@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+  <style>
+    html, body {
+      margin:0;
+    }
+  </style>
+<body>
+<canvas id="canvas" width="1000" height="1000" style="margin: 50px;border: 1px solid #ccc;">
+  your browser do not support canvas.
+</canvas>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const cxt = canvas.getContext('2d');
+
+  // rect 方块
+  cxt.fillStyle="pink";
+  cxt.strokeStyle="black";
+  cxt.fillRect(50.5, 50.5, 200, 100);
+  cxt.strokeRect(50.5, 50.5, 200, 100);
+
+  // arc 圆
+  cxt.beginPath();
+  cxt.arc(100, 200, 50, 0, 180 * Math.PI / 180);
+  cxt.closePath();
+  cxt.fill();
+  cxt.stroke();
+
+  // arc 弧线
+  cxt.beginPath();
+  cxt.moveTo(50, 300);
+  cxt.arcTo(150, 300, 150, 400, 90);
+  cxt.lineWidth = 5;
+  cxt.setLineDash([5, 10]);
+  cxt.lineCap = 'round';
+  cxt.stroke();
+
+  // 注意：line相关的样式设置会影响后续，所以在这里重置
+  cxt.setLineDash([]);
+  cxt.lineCap = 'butt';
+  cxt.lineWidth = 1;
+
+  // 文字
+  cxt.beginPath();
+  const text = '雷猴就是你';
+  cxt.moveTo(50, 500);
+  cxt.lineTo(400, 500);
+  cxt.strokeStyle='red';
+  cxt.stroke();
+  cxt.beginPath();
+  cxt.font = '60px Arial';
+  cxt.strokeStyle = '#f00';
+  cxt.fillStyle = '#ccc';
+  cxt.textAlign = 'left';
+  cxt.textBaseline = 'bottom';
+  cxt.fillText(text, 50, 500);
+  cxt.strokeText(text, 50, 500);
+  cxt.stroke();
+</script>
+
+</body>
+</html>

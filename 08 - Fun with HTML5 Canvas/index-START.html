@@ -4,16 +4,21 @@
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
 </head>
+  <style>
+    html, body {
+      margin:0;
+    }
+  </style>
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
 
-<style>
-  html, body {
-    margin:0;
-  }
-</style>
+
+<script>
+  const canvas = document.getElementById('draw');
+  const ctx = canvas.getContext('2d');
+
+  
+</script>
 
 </body>
 </html>
