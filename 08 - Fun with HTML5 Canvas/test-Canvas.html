@@ -8,8 +8,13 @@
     html, body {
       margin:0;
     }
+
+    img {
+      display: none;
+    }
   </style>
 <body>
+  <img src="./avtar.png" alt="img">
 <canvas id="canvas" width="1000" height="1000" style="margin: 50px;border: 1px solid #ccc;">
   your browser do not support canvas.
 </canvas>
@@ -47,7 +52,7 @@
 
   // 文字
   cxt.beginPath();
-  const text = '雷猴就是你';
+  const text = '雷猴村正';
   cxt.moveTo(50, 500);
   cxt.lineTo(400, 500);
   cxt.strokeStyle='red';
@@ -61,6 +66,40 @@
   cxt.fillText(text, 50, 500);
   cxt.strokeText(text, 50, 500);
   cxt.stroke();
+
+  // 绘制图片：2种方式 - 1.在JS里加载图片再渲染；2. 把DOM里的图片拿到canvas里渲染；
+  // JS方式
+  const image1 = new Image();
+  image1.src = './avtar.png';
+  image1.onload = () => {
+    cxt.drawImage(image1, 30, 550);
+  }
+  // DOM方式（包括设置宽高）
+  window.onload = () => {
+    const imgEle = document.querySelector('img');
+    cxt.drawImage(imgEle, 200, 550, 100, 100);
+  }
+
+  // 截取图片
+  // drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
+  // image: 图片对象
+  // sx: 开始截取的横坐标
+  // sy: 开始截取的纵坐标
+  // sw: 截取的宽度
+  // sh: 截取的高度
+  // dx: 图片左上角的横坐标位置
+  // dy: 图片左上角的纵坐标位置
+  // dw: 图片宽度
+  // dh: 图片高度
+
+  const image2 =  new Image();
+  image2.src = './avtar.png';
+
+
+  image2.onload = () => {
+    cxt.drawImage(image2, 0, 0, 100, 100, 300, 550, 100, 100);
+    // 也可以使用DOM方式
+  }
 </script>
 
 </body>
