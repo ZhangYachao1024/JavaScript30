@@ -63,20 +63,23 @@
     // 2. querySelector和querySelectorAll适用更多场景
     // 3. transitionend事件过渡结束触发
     window.addEventListener('keydown', perform);
-    document.querySelector('.keys').addEventListener('transitionend', reset);
 
     function perform(event) {
       const activeKey = document.querySelector(`div[data-key="${event.keyCode}"]`);
       if (!activeKey) return;
 
+      // transition完成后清除样式
+      const resetCss = function (event) {
+        event.target.classList.remove('playing');
+        activeKey.removeEventListener('transitionend', resetCss);
+      };
+      activeKey.addEventListener('transitionend', resetCss);
       activeKey.classList.add('playing');
+
+      // 停止正在播放的声音，播放当前声音
       const activeAudio = document.querySelector(`audio[data-key="${event.keyCode}"]`);
       activeAudio.currentTime = 0;
       activeAudio.play();
-    }
-
-    function reset(event) {
-      event.target.classList.remove('playing');
     }
   </script>
 
