@@ -97,9 +97,28 @@
 
 
   image2.onload = () => {
-    cxt.drawImage(image2, 0, 0, 100, 100, 300, 550, 100, 100);
+    // cxt.drawImage(image2, 0, 0, 100, 100, 300, 700, 100, 100);
     // 也可以使用DOM方式
+
+    // canvas动画效果
+    // 1.setInterval()实现动画
+    // 2.requestAnimationFrame()实现动画
+    let x = canvas.width;
+  
+    function animate() {
+      cxt.clearRect(0, 700, 100, 100);
+      cxt.drawImage(image2, 0, 0, 100, 100, x, 700, 100, 100);
+      if (x < canvas.width) {
+        ++x;
+      } else {
+        x = 0;
+      }
+      requestAnimationFrame(animate);
+    }
+  
+    animate();
   }
+
 </script>
 
 </body>
