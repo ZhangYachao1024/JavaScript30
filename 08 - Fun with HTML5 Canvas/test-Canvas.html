@@ -47,7 +47,8 @@
 
   // 注意：line相关的样式设置会影响后续，所以在这里重置
   cxt.setLineDash([]);
-  cxt.lineCap = 'butt';
+  cxt.lineCap = 'butt'; // 默认: butt; 圆形: round; 方形: square
+  cxt.lineJoin = 'miter' // 线条连接的样式。miter: 默认; bevel: 斜面; round: 圆角
   cxt.lineWidth = 1;
 
   // 文字

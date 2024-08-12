@@ -10,14 +10,65 @@
     }
   </style>
 <body>
-<canvas id="draw" width="800" height="800"></canvas>
+<canvas id="draw" width="800" height="800" style="border: 1px solid #ccc;"></canvas>
 
 
 <script>
   const canvas = document.getElementById('draw');
   const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let x = 0;
+  let y = 0;
+  let hue = 0;
+  const maxHue = 360;
+  const minHue = 0;
+  let lineWidth = 2;
+  const maxLineWidth = 40;
+  const minLineWidth = 1;
+  let isLineWidthIncrease = true;
 
-  
+  canvas.addEventListener('mousedown', e => {
+    isDrawing = true;
+    [x, y] = [e.clientX, e.clientY];
+    
+    canvas.addEventListener('mousemove', onMouseMove);
+  })
+
+  canvas.addEventListener('mouseup', () => {
+    canvas.removeEventListener('mousemove', onMouseMove);
+    isDrawing = false;
+  });
+
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+  function onMouseMove(e) {
+    if (!isDrawing) return;
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = `hsl(${ hue }, 100%, 50%)`;
+    ctx.lineTo(e.clientX, e.clientY);
+    ctx.stroke();
+
+    // update
+    [x, y] = [e.clientX, e.clientY];
+    hue = hue < maxHue ? ++hue : minHue;
+    updateLineWith();
+  }
+
+  function updateLineWith() {
+    if ((lineWidth >= maxLineWidth) || (lineWidth <= minLineWidth)) {
+      isLineWidthIncrease = !isLineWidthIncrease;
+    }
+    if (isLineWidthIncrease) {
+      ++lineWidth;
+    } else {
+      --lineWidth;
+    }
+  }
 </script>
 
 </body>
