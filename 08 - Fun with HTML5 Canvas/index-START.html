@@ -10,27 +10,58 @@
     }
   </style>
 <body>
-<canvas id="draw" width="800" height="800" style="border: 1px solid #ccc;"></canvas>
+<canvas id="draw"></canvas>
 
 
 <script>
   const canvas = document.getElementById('draw');
+  canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+
   const ctx = canvas.getContext('2d');
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
   let isDrawing = false;
+  const minHue = 0;
+  const maxHue = 360;
+  const minLineWidth = 1;
+  const maxLineWidth = 40;
+  let hue = 0;
+  let isLineWidthIncrease = true;
   let x = 0;
   let y = 0;
-  let hue = 0;
-  const maxHue = 360;
-  const minHue = 0;
-  let lineWidth = 2;
-  const maxLineWidth = 40;
-  const minLineWidth = 1;
-  let isLineWidthIncrease = true;
+
+  function onMouseMove(e) {
+    if (!isDrawing) return;
+
+    ctx.beginPath();
+
+    // color range
+    hue = hue < maxHue ? ++hue : minHue;
+    ctx.strokeStyle = `hsl(${ hue }, 100%, 50%)`;
+
+    // line width range
+    if ((ctx.lineWidth >= maxLineWidth) || (ctx.lineWidth <= minLineWidth)) {
+      isLineWidthIncrease = !isLineWidthIncrease;
+    }
+    if (isLineWidthIncrease) {
+      ++ctx.lineWidth;
+    } else {
+      --ctx.lineWidth;
+    }
+
+    ctx.moveTo(x, y);
+    ctx.lineTo(e.clientX, e.clientY);
+    ctx.stroke();
+
+    [x, y] = [e.clientX, e.clientY];
+  }
 
   canvas.addEventListener('mousedown', e => {
     isDrawing = true;
     [x, y] = [e.clientX, e.clientY];
-    
+
     canvas.addEventListener('mousemove', onMouseMove);
   })
 
@@ -40,35 +71,6 @@
   });
 
   canvas.addEventListener('mouseout', () => isDrawing = false);
-
-  function onMouseMove(e) {
-    if (!isDrawing) return;
-
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = `hsl(${ hue }, 100%, 50%)`;
-    ctx.lineTo(e.clientX, e.clientY);
-    ctx.stroke();
-
-    // update
-    [x, y] = [e.clientX, e.clientY];
-    hue = hue < maxHue ? ++hue : minHue;
-    updateLineWith();
-  }
-
-  function updateLineWith() {
-    if ((lineWidth >= maxLineWidth) || (lineWidth <= minLineWidth)) {
-      isLineWidthIncrease = !isLineWidthIncrease;
-    }
-    if (isLineWidthIncrease) {
-      ++lineWidth;
-    } else {
-      --lineWidth;
-    }
-  }
 </script>
 
 </body>
